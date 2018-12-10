@@ -542,7 +542,7 @@ class KPDBv1(object):
             else:
                 raise KPError("Given parent doesn't exist")
         self._num_groups += 1
-        return True
+        return group
 
     def remove_group(self, group = None):
         """This method removes a group.
@@ -683,25 +683,37 @@ class KPDBv1(object):
         
         """
         
-        if (type(title) is not str or
-            type(image) is not int or image < 0 or
-            type(url) is not str or
-            type(username) is not str or
-            type(password) is not str or
-            type(comment) is not str or
-            type(y) is not int or
-            type(mon) is not int or
-            type(d) is not int or
-            type(h) is not int or
-            type(min_) is not int
-            or type(s) is not int or
-            type(group) is not v1Group):
-            raise KPError("One argument has not a valid type.")
+        if type(title) is not str:
+            raise KPError("'title' does not validate.  It must be of type str.")
+        elif type(image) is not int or image < 0:
+            raise KPError("'image' does not validate.  It must be of type int and greater than 0.")
+        elif type(url) is not str:
+            raise KPError("'url' does not validate.  It must be of type str.")
+        elif type(username) is not str:
+            raise KPError("'username' does not validate.  It must be of type str.")
+        elif type(password) is not str:
+            raise KPError("'password' does not validate.  It must be of type str.")
+        elif type(comment) is not str:
+            raise KPError("'comment' does not validate.  It must be of type str.")
+        elif type(y) is not int:
+            raise KPError("'y' does not validate.  It must be of type int.")
+        elif type(mon) is not int:
+            raise KPError("'mon' does not validate.  It must be of type int.")
+        elif type(d) is not int:
+            raise KPError("'d' does not validate.  It must be of type int.")
+        elif type(h) is not int:
+            raise KPError("'h' does not validate.  It must be of type int.")
+        elif type(min_) is not int:
+            raise KPError("'min_' does not validate.  It must be of type int.")
+        elif type(s) is not int:
+            raise KPError("'s' does not validate.  It must be of type int.")
+        elif type(group) is not v1Group:
+            raise KPError("'group' does not validate.  It must be of type v1Group.")
         elif group not in self.groups:
             raise KPError("Group doesn't exist.")
         elif (y > 9999 or y < 1 or mon > 12 or mon < 1 or d > 31 or d < 1 or
               h > 23 or h < 0 or min_ > 59 or min_ < 0 or s > 59 or s < 0):
-            raise KPError("No legal date")
+            raise KPError("A legal date must be specified")
         elif (((mon == 1 or mon == 3 or mon == 5 or mon == 7 or mon == 8 or
                 mon == 10 or mon == 12) and d > 31) or
                ((mon == 4 or mon == 6 or mon == 9 or mon == 11) and d > 30) or
@@ -720,7 +732,7 @@ class KPDBv1(object):
         self.entries.append(entry)
         group.entries.append(entry)
         self._num_entries += 1
-        return True
+        return entry
 
     def remove_entry(self, entry = None):
         """This method can remove entries.
